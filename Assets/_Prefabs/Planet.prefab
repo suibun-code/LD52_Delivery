@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2427115677892545457}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12, y: 12, z: 1}
+  m_LocalScale: {x: 10, y: 10, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2427115679413738036}
@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faf133fa789f1c49a49f1762ea3b07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 4
-  playerMagnituteForceMultiplier: 2
-  pull: 1
+  intensity: 12
+  playerMagnituteForceMultiplier: 1
+  pull: 2
   isCollidingWithPlayer: 0
 --- !u!212 &2427115677892545469
 SpriteRenderer:
@@ -146,7 +146,7 @@ Transform:
   m_GameObject: {fileID: 2427115678945916600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2427115679413738036}
@@ -164,8 +164,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0faf133fa789f1c49a49f1762ea3b07e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  intensity: 8
-  playerMagnituteForceMultiplier: 4
+  intensity: 4
+  playerMagnituteForceMultiplier: 8
   pull: 2
   isCollidingWithPlayer: 0
 --- !u!212 &2427115678945916602
@@ -264,7 +264,7 @@ Transform:
   m_GameObject: {fileID: 2427115679413737994}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2427115678945916603}

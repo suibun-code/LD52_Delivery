@@ -6,18 +6,9 @@
             "id": "62981f33-14c5-4a7f-a204-d233bd72a859",
             "actions": [
                 {
-                    "name": "Move",
-                    "type": "Value",
-                    "id": "550f3575-7422-4c94-8a08-12e27d9433e3",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
-                },
-                {
-                    "name": "Boost",
-                    "type": "Button",
-                    "id": "75d0ae27-dc21-4473-9483-f5966a7c5907",
+                    "name": "LMB",
+                    "type": "PassThrough",
+                    "id": "6f361ffa-31d7-410c-9382-1ec62f7f07cc",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -26,68 +17,13 @@
             ],
             "bindings": [
                 {
-                    "name": "2D Vector",
-                    "id": "e77fc9a5-a098-41c3-9671-a492a602c88a",
-                    "path": "2DVector",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": true,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "up",
-                    "id": "a5e47a7d-325b-4d8f-a793-b38cca85153a",
-                    "path": "<Keyboard>/w",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "down",
-                    "id": "8cc43415-16bc-41e2-8235-ec6d151936fd",
-                    "path": "<Keyboard>/s",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "left",
-                    "id": "f86b549b-de08-46cb-b6d4-d3a20f600f0e",
-                    "path": "<Keyboard>/a",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
-                    "name": "right",
-                    "id": "63a8afa2-2196-4b5d-b72c-bcf374efc3b1",
-                    "path": "<Keyboard>/d",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Move",
-                    "isComposite": false,
-                    "isPartOfComposite": true
-                },
-                {
                     "name": "",
-                    "id": "723061fa-21d2-4d78-b5f9-4f34355cb422",
-                    "path": "<Keyboard>/space",
+                    "id": "c7844be4-04df-44bd-aafb-2306bbeb881f",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Boost",
+                    "action": "LMB",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

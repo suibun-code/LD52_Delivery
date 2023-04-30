@@ -10,15 +10,15 @@ public class PlanetGravityRadius : MonoBehaviour
 
     public bool isCollidingWithPlayer = false;
 
-    public delegate void myDelegate();
-    public myDelegate myDelegateInstance;
+    public delegate void planetGravityDelegate();
+    public planetGravityDelegate gravityDelegate;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))
         {
             isCollidingWithPlayer = true;
-            myDelegateInstance();
+            gravityDelegate();
         }
     }
 
@@ -27,7 +27,7 @@ public class PlanetGravityRadius : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             isCollidingWithPlayer = false;
-            myDelegateInstance();
+            gravityDelegate();
         }
     }
 
