@@ -5,16 +5,19 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private Transform planetTransform;
+    [Header("Move Cooldown")]
     [SerializeField] private float moveCooldownMin;
     [SerializeField] private float moveCooldownMax;
+
+    [Header("Move Power")]
     [SerializeField] private float movePowerMin;
     [SerializeField] private float movePowerMax;
 
-    [Tooltip("How much percent of the screen the move line can take up.")]
-    [SerializeField] [Range(0.15f, 0.5f)] private float moveLineMaxLength;
-
+    [Header("Move Line")]
     [SerializeField] private LineRenderer lineRenderer;
+
+    [Tooltip("How much percent of the screen the move line can take up. Can only be changed before play.")]
+    [SerializeField] [Range(0.15f, 0.5f)] private float moveLineMaxLength;
 
     private Camera mainCamera;
     private Rigidbody2D rb;
@@ -23,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving = false;
     private bool isSettingMoveLine = false;
     private float moveCooldown;
-    [SerializeField] private float moveCooldownTimer;
+    private float moveCooldownTimer;
     private float movePower;
 
     // Move line variables.
@@ -32,8 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private float moveLineLength;
 
     // Mouse position variables.
-    Vector2 dirTowardsMousePos;
-    float distBetweenMouseEventsClamped;
+    private float distBetweenMouseEventsClamped;
+    private Vector2 dirTowardsMousePos;
     private Vector2 mousePos;
     private Vector2 lastMouseClickPos;
 
