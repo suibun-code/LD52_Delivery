@@ -2,12 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    private Camera mainCamera;
+    [SerializeField] private Rigidbody2D rigidBody;
+
     [Header("Move Cooldown")]
     [SerializeField] private float moveCooldownMin;
     [SerializeField] private float moveCooldownMax;
+    [SerializeField] private Slider moveCooldownSlider;
 
     [Header("Move Power")]
     [SerializeField] private float movePowerMin;
@@ -16,11 +21,13 @@ public class PlayerMovement : MonoBehaviour
     [Header("Move Line")]
     [SerializeField] private LineRenderer lineRenderer;
 
-    [Tooltip("How much percent of the screen the move line can take up. Can only be changed before play.")]
-    [SerializeField] [Range(0.15f, 0.5f)] private float moveLineMaxLength;
+    [Header("Stamina")]
+    [SerializeField] private float staminaMax;
+    [SerializeField] private float staminaRegenRate;
+    [SerializeField] private Slider staminaSlider;
 
-    private Camera mainCamera;
-    private Rigidbody2D rb;
+    [Tooltip("How much percent of the screen the move line can take up. Can only be changed before play.")]
+    [SerializeField][Range(0.15f, 0.5f)] private float moveLineMaxLength;
 
     // Movement variables.
     private bool isMoving = false;
@@ -40,9 +47,12 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 mousePos;
     private Vector2 lastMouseClickPos;
 
+    // Stamina variables.
+    private float stamina;
+    private float staminaRegenTimer;
+
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
         mainCamera = Camera.main;
         moveLineEffectiveDistanceScreenSpace = CalculateDiagonalScreenSize() * moveLineMaxLength;
     }
@@ -50,33 +60,38 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         if (isSettingMoveLine)
-        {
             CalculateMoveLine();
-        }
     }
 
     private void OnLMB(InputValue value)
     {
-        if (isMoving)
-            return;
-
-        // Get the mouse position.
-        mousePos = Mouse.current.position.ReadValue();
-
-        if (value.isPressed)       // LMB Pressed
+        // LMB Pressed
+        if (value.isPressed)
         {
+            // The player has clicked a button to begin setting the move line.
+            isSettingMoveLine = true;
+
+            // Get the mouse position.
+            mousePos = Mouse.current.position.ReadValue();
+
             // Set the last mouse click position. This is used to calculate the move line length.
             lastMouseClickPos = mousePos;
 
-            // Set the start position of the move line.
-            lineRenderer.SetPosition(0, mainCamera.ScreenToWorldPoint(lastMouseClickPos));
-            lineRenderer.SetPosition(0, new Vector3(lineRenderer.GetPosition(0).x, lineRenderer.GetPosition(0).y, 0));
+            // If the player is already moving, don't allow them to set a new move line.
+            if (isMoving)
+            {
+                // Set the start position of the move line.
+                lineRenderer.SetPosition(0, mainCamera.ScreenToWorldPoint(lastMouseClickPos));
+                lineRenderer.SetPosition(0, new Vector3(lineRenderer.GetPosition(0).x, lineRenderer.GetPosition(0).y, 0));
+            }
 
-            // The player has clicked a button to begin setting the move line.
-            isSettingMoveLine = true;
         }
-        else if (!value.isPressed && isSettingMoveLine == true) // LMB Released
+
+        // LMB Released
+        else if (!value.isPressed && isSettingMoveLine == true)
         {
+            isSettingMoveLine = false;
+
             // Move cooldown is the max distance multiplied by the difference between the max and min move cooldowns.
             moveCooldown = Mathf.Lerp(moveCooldownMin, moveCooldownMax, moveLineDistanceRange);
 
@@ -87,12 +102,12 @@ public class PlayerMovement : MonoBehaviour
             lineRenderer.SetPosition(0, Vector2.zero);
             lineRenderer.SetPosition(1, Vector2.zero);
 
-            // The player has released the button and is no longer setting the move line.
-            isSettingMoveLine = false;
+            // If the player is already moving, don't allow them to set a new move line.
+            if (isMoving)
+                return;
 
             isMoving = true;
-
-            rb.AddForce(dirTowardsMousePos * movePower, ForceMode2D.Impulse);
+            rigidBody.AddForce(dirTowardsMousePos * movePower, ForceMode2D.Impulse);
 
             StartCoroutine(CountdownMoveCooldown());
         }
@@ -100,22 +115,22 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator CountdownMoveCooldown()
     {
+        moveCooldownSlider.gameObject.SetActive(true);
+        moveCooldownSlider.maxValue = moveCooldown;
+
         moveCooldownTimer = moveCooldown;
 
         while (moveCooldownTimer > 0)
         {
             moveCooldownTimer -= Time.deltaTime;
+            moveCooldownSlider.value = moveCooldownTimer;
             yield return null;
         }
 
+        moveCooldownSlider.gameObject.SetActive(false);
         isMoving = false;
 
         yield return null;
-    }
-
-    public void AddPlanetGravity(Vector2 force, Vector2 direction)
-    {
-        rb.AddForce(force);
     }
 
     private void CalculateMoveLine()

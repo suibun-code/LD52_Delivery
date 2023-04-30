@@ -8,6 +8,7 @@ public class PlanetGravityRadius : MonoBehaviour
     [SerializeField] float playerMagnituteForceMultiplier;
     [SerializeField] float pull;
 
+    private static float playerDrag;
     public bool isCollidingWithPlayer = false;
 
     public delegate void planetGravityDelegate();
@@ -19,6 +20,9 @@ public class PlanetGravityRadius : MonoBehaviour
         {
             isCollidingWithPlayer = true;
             gravityDelegate();
+
+            playerDrag = other.GetComponent<Rigidbody2D>().drag;
+            other.GetComponent<Rigidbody2D>().drag = 0;
         }
     }
 
@@ -28,6 +32,8 @@ public class PlanetGravityRadius : MonoBehaviour
         {
             isCollidingWithPlayer = false;
             gravityDelegate();
+
+            other.GetComponent<Rigidbody2D>().drag = playerDrag;
         }
     }
 
@@ -36,12 +42,9 @@ public class PlanetGravityRadius : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Vector2 direction = (transform.position - other.transform.position).normalized * pull;
-
             float force = intensity * (other.GetComponent<Rigidbody2D>().velocity.magnitude * playerMagnituteForceMultiplier);
-
             Vector2 gravity = direction * force;
-
-            other.GetComponent<PlayerMovement>().AddPlanetGravity(gravity, direction);
+            other.GetComponent<Rigidbody2D>().AddForce(gravity);
         }
     }
 }
