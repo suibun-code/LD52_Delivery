@@ -9,25 +9,31 @@ public class PlayerMovement : MonoBehaviour
     private Camera mainCamera;
     [SerializeField] private Rigidbody2D rigidBody;
 
-    [Header("Move Cooldown")]
-    [SerializeField] private float moveCooldownMin;
-    [SerializeField] private float moveCooldownMax;
-    [SerializeField] private Slider moveCooldownSlider;
-
     [Header("Move Power")]
     [SerializeField] private float movePowerMin;
     [SerializeField] private float movePowerMax;
 
     [Header("Move Line")]
     [SerializeField] private LineRenderer lineRenderer;
-
-    [Header("Stamina")]
-    [SerializeField] private float staminaMax;
-    [SerializeField] private float staminaRegenRate;
-    [SerializeField] private Slider staminaSlider;
-
     [Tooltip("How much percent of the screen the move line can take up. Can only be changed before play.")]
     [SerializeField][Range(0.15f, 0.5f)] private float moveLineMaxLength;
+    [SerializeField] private float minLineThickness;
+    [SerializeField] private float maxLineThickness;
+    [SerializeField] private Color smallColor;
+    [SerializeField] private Color largeColor;
+
+    [Header("Move Cooldown")]
+    [SerializeField] private Slider moveCooldownSlider;
+    [SerializeField] private float moveCooldownMin;
+    [SerializeField] private float moveCooldownMax;
+
+    [Header("Stamina")]
+    [SerializeField] private Slider staminaSlider;
+    [SerializeField] private float staminaMax;
+    [SerializeField] private float staminaUsageMin;
+    [SerializeField] private float staminaUsageMax;
+    [SerializeField] private float staminaRegenRate;
+    [SerializeField] private float staminaRegenTimer;
 
     // Movement variables.
     private bool isMoving = false;
@@ -49,12 +55,18 @@ public class PlayerMovement : MonoBehaviour
 
     // Stamina variables.
     private float stamina;
-    private float staminaRegenTimer;
+    private IEnumerator staminaCoroutine;
+    private bool isStaminaRegenTimerRunning;
 
-    private void Awake()
+    private void Start()
     {
         mainCamera = Camera.main;
         moveLineEffectiveDistanceScreenSpace = CalculateDiagonalScreenSize() * moveLineMaxLength;
+
+        stamina = staminaMax;
+        staminaSlider.maxValue = staminaMax;
+        staminaSlider.value = staminaMax;
+
     }
 
     private void Update()
@@ -106,9 +118,14 @@ public class PlayerMovement : MonoBehaviour
             if (isMoving)
                 return;
 
+            // If the move would make the stamina fall below 0, don't allow the player to move.
+            if (stamina - Mathf.Lerp(staminaUsageMin, staminaUsageMax, moveLineDistanceRange) <= 0)
+                return;
+
             isMoving = true;
             rigidBody.AddForce(dirTowardsMousePos * movePower, ForceMode2D.Impulse);
 
+            StartCoroutine(UseStamina());
             StartCoroutine(CountdownMoveCooldown());
         }
     }
@@ -133,6 +150,47 @@ public class PlayerMovement : MonoBehaviour
         yield return null;
     }
 
+    private IEnumerator UseStamina()
+    {
+        stamina -= Mathf.Lerp(staminaUsageMin, staminaUsageMax, moveLineDistanceRange);
+        staminaSlider.value = stamina;
+
+        if (isStaminaRegenTimerRunning)
+        {
+            StopCoroutine(staminaCoroutine);
+        }
+
+        staminaCoroutine = StaminaRegenTimer();
+
+        yield return StartCoroutine(staminaCoroutine);
+
+        StartCoroutine(RegenStamina());
+    }
+
+    private IEnumerator StaminaRegenTimer()
+    {
+        Debug.Log("isStaminaRegenTimerRunning = true");
+        isStaminaRegenTimerRunning = true;
+
+        yield return new WaitForSeconds(staminaRegenTimer);
+
+        isStaminaRegenTimerRunning = false;
+        Debug.Log("isStaminaRegenTimerRunning = false");
+    }
+
+    private IEnumerator RegenStamina()
+    {
+        while (stamina < staminaMax && !isStaminaRegenTimerRunning)
+        {
+            stamina += staminaRegenRate * Time.deltaTime;
+            staminaSlider.value = stamina;
+
+            yield return null;
+        }
+
+        yield return null;
+    }
+
     private void CalculateMoveLine()
     {
         // Get the mouse position.
@@ -149,6 +207,10 @@ public class PlayerMovement : MonoBehaviour
 
         // Get the current move line distance range (0 = min, 1 = max).
         moveLineDistanceRange = distBetweenMouseEventsClamped / moveLineEffectiveDistanceScreenSpace;
+
+        lineRenderer.startColor = Color.Lerp(smallColor, largeColor, moveLineDistanceRange);
+        lineRenderer.endColor = Color.Lerp(smallColor, largeColor, moveLineDistanceRange);
+        lineRenderer.startWidth = Mathf.Lerp(minLineThickness, maxLineThickness, moveLineDistanceRange);
 
         // Lerp the move line length between 0 and the max move line length based on the current move line distance range.
         moveLineLength = Mathf.Lerp(0, moveLineEffectiveDistanceScreenSpace, moveLineDistanceRange);
