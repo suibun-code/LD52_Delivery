@@ -7,6 +7,10 @@ public class UIHandler : MonoBehaviour
 {
     public static UIHandler Instance { get; private set; }
 
+    [SerializeField] private TMP_Text scoreText;
+    [SerializeField] private TMP_Text currentCargoText;
+    [SerializeField] private TMP_Text maxCargoText;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -22,13 +26,21 @@ public class UIHandler : MonoBehaviour
         OnScoreUpdateEvent -= UpdateScore;
     }
 
-    [SerializeField] private TMP_Text scoreText;
-
     public delegate void OnScoreUpdate(int score);
     public OnScoreUpdate OnScoreUpdateEvent;
 
     private void UpdateScore(int score)
     {
         scoreText.text = "SCORE " + score.ToString();
+    }
+
+    public void UpdateCargoDelivered(int cargoDelivered)
+    {
+        currentCargoText.text = cargoDelivered.ToString();
+    }
+
+    public void SetMaxCargo(int maxCargo)
+    {
+        maxCargoText.text = "/ " + maxCargo.ToString();
     }
 }

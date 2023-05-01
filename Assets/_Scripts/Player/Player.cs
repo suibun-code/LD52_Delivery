@@ -36,6 +36,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float staminaRegenTimer;
 
     [Header("Cargo")]
+    [SerializeField] private int cargoDeliveredGoal;
     [SerializeField] private Cargo[] cargoList = new Cargo[cargoInventorySpaceMax];
     [SerializeField] private Color noCargoColor;
     [SerializeField] private Image[] cargoSlots = new Image[cargoInventorySpaceMax];
@@ -69,6 +70,7 @@ public class Player : MonoBehaviour
     // Cargo variables.
     private const int cargoInventorySpaceMax = 3;
     private int cargoCount = 0;
+    private int cargoDelivered = 0;
 
     //Properties
     public int CargoCount
@@ -89,6 +91,7 @@ public class Player : MonoBehaviour
         staminaSlider.maxValue = staminaMax;
         staminaSlider.value = staminaMax;
 
+        UIHandler.Instance.SetMaxCargo(cargoDeliveredGoal);
     }
 
     private void Update()
@@ -101,6 +104,17 @@ public class Player : MonoBehaviour
     {
         score += scoreToAdd;
         UIHandler.Instance.OnScoreUpdateEvent(score);
+    }
+
+    public void AddCargoDelivered()
+    {
+        if (cargoDelivered >= cargoDeliveredGoal)
+            Debug.Log("You win!");
+        else
+        {
+            ++cargoDelivered;
+            UIHandler.Instance.UpdateCargoDelivered(cargoDelivered);
+        }
     }
 
     public void AddCargo(Cargo cargo)
@@ -164,8 +178,8 @@ public class Player : MonoBehaviour
         // Decrease the cargo count.
         --cargoCount;
 
-        // Increase the score.
-        AddScore(1);
+        // Increase the cargo delivered count.
+        AddCargoDelivered();
 
         Debug.Log("Cargo removed from slot " + index + ".");
     }
@@ -218,6 +232,8 @@ public class Player : MonoBehaviour
                 return;
 
             isMoving = true;
+
+            // Add force to the player rigidbody.
             rigidBody.AddForce(dirTowardsMousePos * movePower, ForceMode2D.Impulse);
 
             StartCoroutine(UseStamina());

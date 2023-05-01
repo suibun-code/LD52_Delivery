@@ -6,16 +6,10 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public void GoToMenu()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        Debug.Log("Loading menu scene...");
+        SceneManager.LoadScene("Menu");
     }
 
     public void StartGame()
@@ -26,7 +20,7 @@ public class Menu : MonoBehaviour
 
     public void QuitGame()
     {
+        Debug.Log("Quitting game...");
         Application.Quit();
-        Debug.Log("Quitting Game");
     }
 }
