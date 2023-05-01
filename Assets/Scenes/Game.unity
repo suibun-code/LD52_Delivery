@@ -844,7 +844,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 1731552189}
   movePowerMin: 100
-  movePowerMax: 1000
+  movePowerMax: 1150
   lineRenderer: {fileID: 2045583565}
   moveLineMaxLength: 0.2
   minLineThickness: 2
@@ -860,7 +860,7 @@ MonoBehaviour:
   staminaUsageMax: 50
   staminaRegenRate: 15
   staminaRegenTimer: 1.5
-  cargoDeliveredGoal: 15
+  cargoDeliveredGoal: 2
   cargoList:
   - {fileID: 0}
   - {fileID: 0}

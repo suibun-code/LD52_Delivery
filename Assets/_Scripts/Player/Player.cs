@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -109,7 +110,10 @@ public class Player : MonoBehaviour
     public void AddCargoDelivered()
     {
         if (cargoDelivered >= cargoDeliveredGoal)
+        {
             Debug.Log("You win!");
+            SceneManager.LoadScene("Victory");
+        }
         else
         {
             ++cargoDelivered;

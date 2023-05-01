@@ -22,18 +22,11 @@ public class PlanetCargoOutput : MonoBehaviour
             {
                 for (int i = 0; i < player.CargoList.Length; ++i)
                 {
-                    Debug.Log("I: " + i);
-
                     if (player.CargoList[i] != null)
                     {
-                        Debug.Log("index " + i + " has cargo for planet: " + player.CargoList[i].destinationPlanetID);
-
                         // If the player has cargo to deliver to this planet, remove the cargo from the player's cargo list.
                         if (player.CargoList[i].destinationPlanetID == parentPlanet.planetID)
-                        {
                             player.RemoveCargo(i);
-                            Debug.Log("Cargo Delivered");
-                        }
                     }
                 }
             }

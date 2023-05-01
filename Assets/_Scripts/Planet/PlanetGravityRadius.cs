@@ -42,8 +42,9 @@ public class PlanetGravityRadius : MonoBehaviour
             // If the gravity type is outer, apply a boost of force to the player when they enter the gravity field.
             if (applyingGravity && gravityType == GravityType.Outer)
             {
-                Vector3 enteranceVelocity = playerRigidBody.velocity;
-                playerRigidBody.AddForce(enteranceVelocity * 100f);
+                //Vector3 enteranceVelocity = playerRigidBody.velocity;
+                //playerRigidBody.AddForce(enteranceVelocity * 100f);
+                playerRigidBody.velocity *= 0.70f;
             }
         }
     }
