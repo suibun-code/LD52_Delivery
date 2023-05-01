@@ -6466,8 +6466,8 @@ MonoBehaviour:
   staminaMax: 100
   staminaUsageMin: 5
   staminaUsageMax: 30
-  staminaRegenRate: 10
-  staminaRegenTimer: 5
+  staminaRegenRate: 15
+  staminaRegenTimer: 2.75
 --- !u!114 &347095158
 MonoBehaviour:
   m_ObjectHideFlags: 0
