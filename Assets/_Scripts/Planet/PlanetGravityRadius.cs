@@ -31,26 +31,19 @@ public class PlanetGravityRadius : MonoBehaviour
             if (playerRigidBody == null)
                 playerRigidBody = other.GetComponent<Rigidbody2D>();
 
-            Debug.Log("TRIGGER ENTER: " + name);
-
             isCollidingWithPlayer = true;
             gravityDelegate();
 
             if (playerDrag == -1f)
-            {
                 playerDrag = playerRigidBody.drag;
-                Debug.Log("FIRST SET playerDrag: " + name);
-            }
 
             playerRigidBody.drag = 0;
-            Debug.Log("SET RIGIDBODY ZERO: " + name);
 
             // If the gravity type is outer, apply a boost of force to the player when they enter the gravity field.
             if (applyingGravity && gravityType == GravityType.Outer)
             {
                 Vector3 enteranceVelocity = playerRigidBody.velocity;
                 playerRigidBody.AddForce(enteranceVelocity * 100f);
-                Debug.Log("ENTRY FORCE APPLIED");
             }
         }
     }
@@ -69,7 +62,6 @@ public class PlanetGravityRadius : MonoBehaviour
             if (gravityType == GravityType.Outer)
             {
                 playerRigidBody.drag = playerDrag;
-                Debug.Log("SET rigidBody.drag = " + playerDrag + ": " + name);
             }
         }
     }

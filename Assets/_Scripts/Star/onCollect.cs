@@ -5,27 +5,28 @@ using UnityEngine;
 public class onCollect : MonoBehaviour
 {
     public GameObject prefab;
-    
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void OnTriggerEnter2D(Collider2D col)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(col.tag == "Player") 
+        if (other.CompareTag("Player"))
         {
-            ScoreManager.instance.AddPoint();
-            Instantiate(prefab, gameObject.transform.position,Quaternion.identity);
+            Player player = other.transform.parent.GetComponentInChildren<Player>();
+            player.AddScore(1);
+
+            Instantiate(prefab, gameObject.transform.position, Quaternion.identity);
             Destroy(gameObject);
-            Debug.Log("obtained 1 star");
         }
     }
 }

@@ -4,16 +4,30 @@ using UnityEngine;
 
 public class Planet : MonoBehaviour
 {
+    // List of all gravity radii.
     [SerializeField] private List<PlanetGravityRadius> gravityRadiusList;
+    [SerializeField] private Color planetCargoColor;
+
+    public Color PlanetCargoColor { get { return planetCargoColor; } private set { planetCargoColor = value; } }
+
+    public int planetID;
 
     private void Awake()
     {
         gravityRadiusList = new List<PlanetGravityRadius>();
 
+        // Add all gravity radii to the list, starting from the top of the child hierarchy. Stops when a child does not have a gravity radius.
         foreach (Transform child in transform)
         {
+            // Add the gravity radius to the list.
             PlanetGravityRadius gravityRadius = child.gameObject.GetComponent<PlanetGravityRadius>();
+
+            if (gravityRadius == null)
+                break;
+
             gravityRadiusList.Add(gravityRadius);
+
+            // Subscribe to the gravity delegate.
             gravityRadius.gravityDelegate += DisableOuterGravityFields;
         }
     }
