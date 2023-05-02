@@ -7,7 +7,10 @@ public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance { get; private set; }
 
-    private AudioSource audioSource;
+    [SerializeField] private AudioSource musicAudioSource;
+    [SerializeField] private AudioSource audioSource;
+
+    [SerializeField] private AudioClip music;
     [SerializeField] private AudioClip coinCollectSound;
 
     private void Awake()
@@ -16,8 +19,6 @@ public class AudioManager : MonoBehaviour
             Destroy(this);
         else
             Instance = this;
-
-        audioSource = GetComponent<AudioSource>();
     }
 
     public void PlayCoinCollectSound()

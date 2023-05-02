@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] private TMP_Text scoreText;
     [SerializeField] private TMP_Text currentCargoText;
     [SerializeField] private TMP_Text maxCargoText;
+    [SerializeField] private TMP_Text countdownText;
 
     private void Awake()
     {
@@ -42,5 +43,10 @@ public class UIHandler : MonoBehaviour
     public void SetMaxCargo(int maxCargo)
     {
         maxCargoText.text = "/ " + maxCargo.ToString();
+    }
+
+    public void UpdateCountdown(float countdown)
+    {
+        countdownText.text = countdown.ToString("F2");
     }
 }
