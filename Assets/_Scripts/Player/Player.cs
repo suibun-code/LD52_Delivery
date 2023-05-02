@@ -239,6 +239,8 @@ public class Player : MonoBehaviour
 
             // Add force to the player rigidbody.
             rigidBody.AddForce(dirTowardsMousePos * movePower, ForceMode2D.Impulse);
+            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, rigidBody.velocity);
+            rigidBody.SetRotation(toRotation);
 
             StartCoroutine(UseStamina());
             StartCoroutine(CountdownMoveCooldown());

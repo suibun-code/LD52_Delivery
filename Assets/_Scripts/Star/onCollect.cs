@@ -24,6 +24,7 @@ public class onCollect : MonoBehaviour
         {
             Player player = other.transform.parent.GetComponentInChildren<Player>();
             player.AddScore(1);
+            AudioManager.Instance.PlayCoinCollectSound();
 
             Instantiate(prefab, gameObject.transform.position, Quaternion.identity);
             Destroy(gameObject);

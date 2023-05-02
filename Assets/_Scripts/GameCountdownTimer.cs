@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class GameCountdownTimer : MonoBehaviour
 {
-    [SerializeField] private float countdownTime;
+    [SerializeField] private float countdownStartTime;
+    [SerializeField] private float countdown;
 
-    private float countdown;
+    private void Start()
+    {
+        countdown = countdownStartTime;
+    }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        countdown -= Time.deltaTime;
     }
 }
